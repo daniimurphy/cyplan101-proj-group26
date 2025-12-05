@@ -35,6 +35,8 @@ scripts/clean_schools.py
 
 See `data/README.md` for instructions on how to download and store data locally.
 
+## Notebooks
+Use load_clean_school_data.ipynb to download our cleaned school dataset.
 
 ## Makefile Workflow
 
