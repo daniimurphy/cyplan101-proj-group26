@@ -105,5 +105,7 @@ OpenStreetMap (Street network via OSMnx)
 
 GTFS Transit Data (https://www.sfmta.com/reports/gtfs-transit-data)
 
+511 SF Bay (2025), Open Transit Data — GTFS Feed Download, retrieved from 511.org
+
 See report/index.md for full APA citations.
 
