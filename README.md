@@ -97,10 +97,13 @@ pip install -r requirements.txt
 
 Raw data is sourced from:
 
-FEMA / HIFLD (Schools)
+FEMA / HIFLD (Public and Private Schools)
 
 SF Open Data (Parks & Recreation)
 
 OpenStreetMap (Street network via OSMnx)
 
+GTFS Transit Data (https://www.sfmta.com/reports/gtfs-transit-data)
+
 See report/index.md for full APA citations.
+
