@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1>Group 26: Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF!</h1>
+    <p>Aiji Li, Anika Sikka, Danielle Murphy, Kathryn Sun</p>
+    <h2> Intro: Problem And Motivation </h2>
+    <p>
+        With our project we explore methods of investigating and analyzing the experience of middle school and high school students in San Francisco. We examine how access to parks and recreation facilities, public spaces, and transit accessibility varies throughout the city. We investigate if there are differences across public vs. private schools.
+        <br><br>
+        We combined multiple geospatial datasets including public and private school locations (Oak Ridge National Laboratory, 2025), OpenStreetMap street networks processed through OSMnx for walkability analysis, San Francisco Recreation & Parks assets for green-space accessibility, San Francisco Planning's 2023 Land Use dataset, and U.S. Census ACS 5-Year Estimates for demographic context. All datasets were projected, cleaned, and integrated in GeoPandas for spatial analysis and visualization.
+    </p>
+    <h3>Research Question</h3>
+    <p>
+        How does access to parks and recreation facilities, public spaces, and transit accessibility vary throughout the city in the context of proximity to schools. Consequently, are there differences in accessibility across public and private schools? 
+    </p>
+    <h3>Hypotheses</h3>
+    <ol>
+        <li>
+            Schools in higher-income ZIP codes will have greater CIE square footage per resident.
+        </li>
+        <li>
+            Accessibility to CIE sites/amenities are positively correlated with income.
+        </li>
+        <li>
+            Accessibility to CIE sites/amenities are positively correlated with private schools rather than public schools.
+        </li>
+    </ol>
+    <h2> Methods </h2>
+    <h3> Transit Accessibility Score </h3>
+    <p>
+        When considering "transit accessibility", which has no universal definition, there are a variety of methodologies used to examine the concept, as discussed in         <a href="https://ira.lib.polyu.edu.hk/bitstream/10397/92556/1/EE-0265_Chung_Review_Transit_Accessibility.pdf">this document</a>. One group of the approaches discussed is "distance based" methods, such as public transport accessibility level (PTAL), which is often used in the UK. PTAL incorporates average waiting time based on service frequency and reliability. This metric provides more insight than just the number of stops, as it considers how often service is available and on-time.
+        <br><br>
+        There are additionally "gravity based methods," which assign weights to destinations, as well as "utility based" accessibility approaches which use a utility function applied to urban opportunities. Due to the complexity of these approaches we will analyze something similar to PTAL as a reasonable metric for transit accessibility. 
+        <br><br>
+        <b>Steps to Computing (PTAL-like) Accessibility Score:</b>
+        <ol>
+            <li>
+                Compute walk time to nearby stop <code>T_{s,i}</code> walk time from school <code>s</code> to stop <code>i</code>
+            </li>
+            <li>
+                Compute service frequency at each stop
+            </li>
+        </ol>
+
+        For a given school <code>s</code> and transit stop <code>i</code>:
+        <pre><code>AW_{s,i} = f_i / (t_s,i + alpha)</code></pre>
+
+        Where <code>alpha</code> is some penalty parameter, we set <code>alpha = 2</code>. This <b>Accessibility Weight</b> captures a stop's contribution to that school's public transit accessibility. The weight is larger if there are more vehicles per hour for the stop, and the weight is downweighted by the term in the denominator that 
+        <br><br>
+        The formula models diminishing returns: the difference between a 2 and 4 minute walk is larger than the difference between a 12 and 14 minute walk. The idea behind this is people strongly discount transit that requires longer walks and feels inconvenient.
+        <br><br>
+        <b>Example of Accessibility Weight:</b>
+        <br><br>
+        Same frequency of service
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Stop</th>
+                <th>Walk Time (t)</th>
+                <th>Frequency (f)</th>
+                <th>Accessibility Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A</td>
+                <td>3</td>
+                <td>12/hr</td>
+                <td>2.4</td>
+              </tr>
+              <tr>
+                <td>B</td>
+                <td>8</td>
+                <td>12/hr</td>
+                <td>1.2</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          Frequent vs Infrequent
+          <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Stop</th>
+                <th>Walk Time (t)</th>
+                <th>Frequency (f)</th>
+                <th>Accessibility Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>C</td>
+                <td>4</td>
+                <td>15/hr</td>
+                <td>2.5</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td>4</td>
+                <td>5/hr</td>
+                <td>0.83</td>
+              </tr>
+            </tbody>
+          </table>
+        <br>
+        The specifics of our data cleaning and analysis are expanded on in the section below, but our general steps for analysis were as follows 
+        <ol>
+            <li>Analyze and conduct EDA on datasets</li>
+            <li>Plot and analyze PTAL in relation to SF schools</li>
+            <li>Plot and analyze MUNI stops relation to SF schools</li>
+        </ol>       
+    </p>
+    <h2> Data & Cleaning </h2>
+    <h3> 511 GTFS Transit Data </h3>
+    <p>
+        Rather than relying on a single operator's feed (e.g., SFMTA), we used the active regional GTFS feed provided by 511, which aggregates schedule data across all publicly available Bay Area transit agencies. This regional feed was accessed via the 511 GTFS Feed Download endpoint by specifying the operator identifier <code>RG</code>, ensuring comprehensive spatial coverage across jurisdictional boundaries
+        <br><br>    
+        The regional GTFS dataset includes standard GTFS tables such as <code>stops.txt</code>, <code>routes.txt</code>, <code>trips.txt</code>, <code>stop_times.txt</code>, and <code>calendar.txt</code>, which together define transit stop locations, route structures, scheduled vehicle trips, stop-level arrival times, and service calendars. Only static schedule data were used as the analysis focuses on scheduled weekday accessibility rather than live operations. We obtained all descriptions of the data from the <a href="https://gtfs.org/documentation/schedule/reference/#routestxt">General Transit Feed Specification Reference</a>
+
+        <br><br>
+        We selected only routes with <code>route_type</code> in <code>{0,1,2,3}</code> which includes any tram/streetcar/light rail service, subway/metro, rail, or bus service. 
+    </p>
+    <h3> School Data </h3>
+    <p>
+        FEMA's Resilience Analysis and Planning Tool has geospatial data on public and private schools in San Francisco. The data comes from the Homeland Infrastructure Foundation-Level Data (HIFLD) database, and includes geospatial details about each uniquely identified school as well as general information about enrollment and start/end grade.
+        
+        <br><br>
+        <b> Private School Data </b>
+        <br>
+        We downloaded SF Private School data, as seen in RAPT, from the source of an <a href="https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Private_Schools_RAPT/FeatureServer">ArcGIS feature server</a>: We downloaded it as a GEOJSON file.
+
+        Each feature contained: <code>"geometry": { "x": ..., "y": ... }</code>. We converted that to shapely Point objects and created a GeoDataFrame:
+        <pre><code>geometry = Point(geom["x"], geom["y"])
+attrs["geometry"] = point
+records.append(attrs)
+
+gdf = gpd.GeoDataFrame(records, geometry="geometry", crs="EPSG:4326")</code></pre>
+
+Then we filtered the data to San Francisco 
+
+<pre><code>sf = gdf[
+   gdf["CITY"].str.contains("San Francisco", case=False, na=False) |
+   gdf["COUNTY"].str.contains("San Francisco", case=False, na=False)
+]</code></pre>
+
+We download the public school data directly from the RAPT interface, loading it from a csv into a geodataframe.
+Then, the private school and public school datasets are nearly identical, with only two additional fields appearing for public schools alone:
+<ul>
+    <li>
+        <code>DISTRICTID</code>
+    </li>
+    <li>
+        <code>GlobalID</code>
+    </li>
+</ul>
+
+The table describes the columns we kept for our analysis. Some columns were deemed not relevant and dropped, a list of which can be found in the appendix.
+Many of the entries in columns <code>WEBSITE</code> and <code>SHELTER_ID</code> were not available but these columns were dropped as the values were not relevant to our analysis.
+Classifying School Levels
+The public and private datasets had different classification systems for the "level" of the school, described below:
+
+For private schools there are <code>"LEVEL_"</code> codes which can be values of 1,2, or 3. There is also <code>"ST_GRADE"</code> and <code>"END_GRADE"</code> which can be used to classify schools.
+<img src="images/image_1.png" alt="School level classification">
+<br>
+The <code>ST_GRADE</code> and <code>END_GRADE</code> fields in the private schools dataset do not directly encode true grade levels. Documentation describing this encoding could not be located, so we inferred the mapping by examining all unique <code>(ST_GRADE, END_GRADE)</code> pairs and verifying individual schools via web searches.
+High schools such as ICA Cristo Rey consistently appeared with <code>ST_GRADE = 14</code> and <code>END_GRADE = 17</code>, indicating that codes 14–17 correspond to Grades 9–12. Schools known to serve Grades K–8 or 6–8 frequently appeared with <code>END_GRADE = 13</code>, suggesting that 13 encodes Grade 8. Based on these patterns, we interpret grade spans of 2–13 and 3–13 as K–8 schools, and 6–13 as middle schools.
+<br><br>
+A small number of schools required manual inspection. For example, St. Ignatius (11–17) is a high school despite having an atypical <code>ST_GRADE</code> code; Mother Goose School (2–4) is a preschool despite its upper-grade code; and San Francisco Christian School (3–17) serves Pre-K through 12. We excluded the Edgewood Center for Children & Families after determining it was not a school.
+Using these interpretations, we assigned each private school to one of: K–8, Elementary, Middle, High, or Other.
+For public schools, the schools are classified in a much more fine-grained way. We use the following dictionary to map the values of <code>"LEVEL_"</code> from the <code>public_school</code> dataset (we only map values of <code>"level_"</code> for which at least one SF school has been labelled as that value) to one of Elementary, Middle, High, None.
+<br><br>
+<pre><code>pub_level_map = {
+    "ELEMENTARY": "Elementary",
+    "MIDDLE": "Middle",
+    "HIGH": "High",
+    "OTHER": "Other",
+    "NOT REPORTED": None,
+}</code></pre>
+
+We used this dictionary to map the already-classified public schools to our smaller subset of labels. Thus we added a new <code>"level_clean"</code> column for each school dataset. 
+After combining, we can view the value counts:
+<img src="images/image_2.png" alt="School level value counts">
+<br>
+The schools classified as "Other" are SF Christian School (K-12), Five Keys Adult School, and S.F. County Special Education. For our analysis we will mostly look at the Elementary, K-8, Middle, and High groups.
+<br><br>
+<b>Cleaning Enrollment</b>
+<br>
+We then cleaned negative enrollment values. There were no private schools with missing/bad values, however 9 out of 133 public schools had negative or zero enrollment values. This included seven early education/children centers, one adult school, and one high school. Upon looking up the high school, it has permanently closed, so we removed it from our dataset (Leadership High). 
+We concatenate the two datasets into one dataset, <code>schools_sf</code>. First add any columns missing with "none" values (there are only two columns that the public data has that the private data is missing). Then we order the columns the same for each dataframe. Finally we created a new id column for the schools just based on its index.
+Then we can create a geodataframe using the geometry from the latitude and longitude columns. 
+</p>
+<h3>Parks Data</h3>
+<p>
+    We used the City of San Francisco parks/open space dataset (CSV) containing one row per park property, including a WKT geometry field (<code>shape</code>) plus basic metadata such as name, address, acreage, and neighborhood labels.
+    <br><br>
+    <b>Loading + geometry</b>
+    <br>
+The raw parks table included a <code>shape</code> column storing geometries as WKT strings. We converted that text geometry into shapely objects and built a GeoDataFrame in WGS84:
+<br><br>
+<pre><code>parks["geometry"] = parks["shape"].apply(wkt.loads)
+parks = gpd.GeoDataFrame(parks, geometry="geometry", crs="EPSG:4326")</code></pre>
+
+<b>Cleaning</b>
+<br>
+Minimal cleaning was needed beyond geometry parsing. We kept the dataset at full extent (San Francisco parks), and relied on the provided latitude/longitude + geometry for mapping and spatial joins.
+</p>
+<h3>Muni Data</h3>
+<p>
+    Upon obtaining SFMTA Muni stop data as a GeoJSON file, we dissected the dataset and then performed analysis in conjunction with our preexisting school dataset. Each feature in the dataset contained geographical information about the stops—we had to reproject the geometry to ensure spatial consistency with the school isochrone data. 
+    <br><br>
+To measure transit accessibility around schools, we performed a spatial join of the Muni stops dataset with the 15-minute walking isochrones computer above. We then grouped the joined dataset by school index to aggregate all stop counts for each school. 
+<br><br>
+Our data visualization followed our usual practices—we created a color scale based on the maximum number of Muni stops within any school's isochrone and applied it to the polygons. The darker the shade of the polygon, the more Muni stops existed for that specific school. 
+</p>
+<h2>Results</h2>
+
+<iframe
+  src="viz/LISA_PTAL_Clusters.html"
+  width="100%"
+  height="800"
+  style="border: none;"
+></iframe>
+
+</body>
+</html>
