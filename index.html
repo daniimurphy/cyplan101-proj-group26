@@ -9,115 +9,265 @@
 
 <body>
 
-    <h1>Group 26: Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF!</h1>
-    <p>Aiji Li, Anika Sikka, Danielle Murphy, Kathryn Sun</p>
+    <h1>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF!</h1>
+    <p>Aiji Li, Anika Sikka, Danielle Murphy, Kathryn Sun (Group 26)</p>
     <h2> Intro: Problem And Motivation </h2>
     <p>
-        With our project we explore methods of investigating and analyzing the experience of middle school and high school students in San Francisco. We examine how access to parks and recreation facilities, public spaces, and transit accessibility varies throughout the city. We investigate if there are differences across public vs. private schools.
+        Access to public transportation, parks, and recreational spaces plays a critical role in shaping students’ daily experiences, influencing how easily they can travel to school, participate in after-school activities, and engage with their surrounding neighborhoods. These forms of accessibility might vary substantially across space, reflecting historical patterns of infrastructure investment, land use, and neighborhood development. Understanding how these spatial disparities manifest around schools is essential for evaluating educational equity and identifying areas where students may face structural barriers to mobility and access to public space.
         <br><br>
-        We combined multiple geospatial datasets including public and private school locations (Oak Ridge National Laboratory, 2025), OpenStreetMap street networks processed through OSMnx for walkability analysis, San Francisco Recreation & Parks assets for green-space accessibility, San Francisco Planning's 2023 Land Use dataset, and U.S. Census ACS 5-Year Estimates for demographic context. All datasets were projected, cleaned, and integrated in GeoPandas for spatial analysis and visualization.
-    </p>
-    <h3>Research Question</h3>
-    <p>
-        How does access to parks and recreation facilities, public spaces, and transit accessibility vary throughout the city in the context of proximity to schools. Consequently, are there differences in accessibility across public and private schools? 
-    </p>
-    <h3>Hypotheses</h3>
-    <ol>
-        <li>
-            Schools in higher-income ZIP codes will have greater CIE square footage per resident.
-        </li>
-        <li>
-            Accessibility to CIE sites/amenities are positively correlated with income.
-        </li>
-        <li>
-            Accessibility to CIE sites/amenities are positively correlated with private schools rather than public schools.
-        </li>
-    </ol>
-    <h2> Methods </h2>
-    <h3> Transit Accessibility Score </h3>
-    <p>
-        When considering "transit accessibility", which has no universal definition, there are a variety of methodologies used to examine the concept, as discussed in         <a href="https://ira.lib.polyu.edu.hk/bitstream/10397/92556/1/EE-0265_Chung_Review_Transit_Accessibility.pdf">this document</a>. One group of the approaches discussed is "distance based" methods, such as public transport accessibility level (PTAL), which is often used in the UK. PTAL incorporates average waiting time based on service frequency and reliability. This metric provides more insight than just the number of stops, as it considers how often service is available and on-time.
+        In this project, we investigate spatial patterns of transit accessibility and park access for middle and high schools across San Francisco. Using geospatial analysis, we examine how access to public transportation and parks varies in the areas immediately surrounding schools, and whether these patterns differ systematically between public and private institutions. Rather than focusing solely on proximity, we adopt accessibility-based measures that incorporate walkability, service frequency, and neighborhood context, providing a more realistic representation of students’ lived access to urban infrastructure.
         <br><br>
-        There are additionally "gravity based methods," which assign weights to destinations, as well as "utility based" accessibility approaches which use a utility function applied to urban opportunities. Due to the complexity of these approaches we will analyze something similar to PTAL as a reasonable metric for transit accessibility. 
+        To conduct this analysis, we integrate multiple geospatial datasets, including public and private school locations from Oak Ridge National Laboratory (2025), OpenStreetMap street networks processed with OSMnx for walkability analysis, San Francisco Recreation & Parks data for green-space accessibility, San Francisco Planning’s 2023 Land Use dataset, and U.S. Census ACS 5-Year Estimates for demographic context. All datasets were cleaned, projected, and analyzed using GeoPandas, enabling consistent spatial joins, distance-based calculations, and visualization.
         <br><br>
-        <b>Steps to Computing (PTAL-like) Accessibility Score:</b>
-        <ol>
-            <li>
-                Compute walk time to nearby stop <code>T_{s,i}</code> walk time from school <code>s</code> to stop <code>i</code>
-            </li>
-            <li>
-                Compute service frequency at each stop
-            </li>
-        </ol>
+        The findings of this project are relevant to urban planners, transportation agencies, and policymakers concerned with educational equity. By identifying spatial disparities and clusters of high or low accessibility around schools, this analysis can help inform targeted investments in transit service, pedestrian infrastructure, and public spaces, particularly in neighborhoods where students may face compounded access constraints.
 
-        For a given school <code>s</code> and transit stop <code>i</code>:
-        <pre><code>AW_{s,i} = f_i / (t_s,i + alpha)</code></pre>
-
-        Where <code>alpha</code> is some penalty parameter, we set <code>alpha = 2</code>. This <b>Accessibility Weight</b> captures a stop's contribution to that school's public transit accessibility. The weight is larger if there are more vehicles per hour for the stop, and the weight is downweighted by the term in the denominator that 
-        <br><br>
-        The formula models diminishing returns: the difference between a 2 and 4 minute walk is larger than the difference between a 12 and 14 minute walk. The idea behind this is people strongly discount transit that requires longer walks and feels inconvenient.
-        <br><br>
-        <b>Example of Accessibility Weight:</b>
-        <br><br>
-        Same frequency of service
-        <table border="1" cellpadding="8" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Stop</th>
-                <th>Walk Time (t)</th>
-                <th>Frequency (f)</th>
-                <th>Accessibility Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>A</td>
-                <td>3</td>
-                <td>12/hr</td>
-                <td>2.4</td>
-              </tr>
-              <tr>
-                <td>B</td>
-                <td>8</td>
-                <td>12/hr</td>
-                <td>1.2</td>
-              </tr>
-            </tbody>
-          </table>
-          <br>
-          Frequent vs Infrequent
-          <table border="1" cellpadding="8" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Stop</th>
-                <th>Walk Time (t)</th>
-                <th>Frequency (f)</th>
-                <th>Accessibility Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>C</td>
-                <td>4</td>
-                <td>15/hr</td>
-                <td>2.5</td>
-              </tr>
-              <tr>
-                <td>D</td>
-                <td>4</td>
-                <td>5/hr</td>
-                <td>0.83</td>
-              </tr>
-            </tbody>
-          </table>
-        <br>
-        The specifics of our data cleaning and analysis are expanded on in the section below, but our general steps for analysis were as follows 
-        <ol>
-            <li>Analyze and conduct EDA on datasets</li>
-            <li>Plot and analyze PTAL in relation to SF schools</li>
-            <li>Plot and analyze MUNI stops relation to SF schools</li>
-        </ol>       
     </p>
+    
+    <section id="research-questions">
+  <h2>Research Questions</h2>
+
+  <p>
+    <strong>Overall Research Question:</strong>
+    How does access to public transportation and parks vary spatially across schools
+    in San Francisco, and to what extent are these accessibility patterns clustered
+    at the neighborhood level?
+  </p>
+
+  <ul>
+    <li>
+      Do schools exhibit localized clusters of high or low transit accessibility,
+      as measured by spatial autocorrelation metrics?
+    </li>
+    <li>
+      How stable are observed transit accessibility patterns across different times
+      of day?
+    </li>
+    <li>
+      How are park accessibility and transit accessibility, as defined in this study,
+      related to one another?
+    </li>
+  </ul>
+</section>
+
+    
+    <section id="methods">
+  <h2>Methods</h2>
+
+  <!-- ========================= -->
+  <!-- Transit Accessibility -->
+  <!-- ========================= -->
+  <section id="transit-accessibility">
+    <h3>Creating a Transit Accessibility Score</h3>
+
+    <p>
+      When considering <em>transit accessibility</em>, which has no universal
+      definition, there are a variety of methodologies used to examine the concept.
+      As discussed in
+      <a href="https://ira.lib.polyu.edu.hk/bitstream/10397/92556/1/EE-0265_Chung_Review_Transit_Accessibility.pdf"
+         target="_blank" rel="noopener noreferrer">
+        Chung (Review of Transit Accessibility Measures)
+      </a>,
+      one group of approaches includes <strong>distance-based methods</strong>,
+      such as Public Transport Accessibility Level (PTAL), which is commonly used
+      in the United Kingdom.
+    </p>
+
+    <p>
+      PTAL incorporates average waiting time based on service frequency and
+      reliability. This provides more insight than simple stop counts, as it
+      accounts for how often transit service is available and how reliable it is.
+    </p>
+
+    <p>
+      Other approaches discussed in the literature include
+      <strong>gravity-based methods</strong>, which assign weights to destinations,
+      and <strong>utility-based accessibility measures</strong>, which apply a
+      utility function to urban opportunities. Due to the complexity of these
+      approaches, we construct a score inspired by PTAL as a reasonable and
+      interpretable metric for transit accessibility.
+    </p>
+  </section>
+
+  <!-- ========================= -->
+  <!-- Computing Score -->
+  <!-- ========================= -->
+  <section id="computing-accessibility">
+    <h3>Computing the Accessibility Score</h3>
+
+    <h4>Data Integration</h4>
+    <p>
+      School–stop walking times are joined with stop–route service frequency data
+      using <code>stop_id</code>, enabling integration of pedestrian access and
+      transit supply.
+    </p>
+
+    <h4>Accessibility Weight Formulation</h4>
+    <p>
+      To combine transit supply with walking access, an
+      <strong>Accessibility Weight (AW)</strong> is computed for each
+      school–stop–route combination:
+    </p>
+
+    <p>
+      <code>
+        AW = (vehicles per hour) / (walk time + α)
+      </code>
+    </p>
+
+    <p>
+      where <code>α</code> is a fixed penalty term (set to 2.0) that prevents
+      extremely small walking times from disproportionately inflating the score.
+    </p>
+
+    <h4>Best-Stop Selection</h4>
+    <p>
+      For each school and transit route, only the stop with the maximum
+      accessibility weight is retained. This reflects the assumption that travelers
+      will choose the most accessible boarding point for a given route.
+    </p>
+
+    <p>
+      The Accessibility Weight captures a stop’s contribution to a school’s public
+      transit accessibility. The weight increases with higher service frequency and
+      is downweighted by walking time.
+    </p>
+
+    <p>
+      The formulation models diminishing returns: the difference between a 2- and
+      4-minute walk is more consequential than the difference between a 12- and
+      14-minute walk. This reflects the tendency for longer walking distances to
+      strongly reduce perceived transit convenience.
+    </p>
+  </section>
+
+  <!-- ========================= -->
+  <!-- Examples -->
+  <!-- ========================= -->
+  <section id="accessibility-examples">
+    <h3>Examples of Accessibility Weight</h3>
+
+    <h4>Same Frequency of Service</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Stop</th>
+          <th>Walk Time (min)</th>
+          <th>Frequency</th>
+          <th>Accessibility Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A</td>
+          <td>3</td>
+          <td>12/hr</td>
+          <td>2.4</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>8</td>
+          <td>12/hr</td>
+          <td>1.2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Frequent vs. Infrequent Service</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Stop</th>
+          <th>Walk Time (min)</th>
+          <th>Frequency</th>
+          <th>Accessibility Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>C</td>
+          <td>4</td>
+          <td>15/hr</td>
+          <td>2.5</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>4</td>
+          <td>5/hr</td>
+          <td>0.83</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      To avoid double-counting transit service that appears at multiple nearby
+      stops for the same route, we do not sum across all reachable stops. Instead,
+      the final transit accessibility score for each school is computed as the sum
+      of the top five accessibility weights across distinct routes.
+    </p>
+  </section>
+
+  <!-- ========================= -->
+  <!-- Spatial Analysis -->
+  <!-- ========================= -->
+  <section id="spatial-analysis">
+    <h3>Methods of Analysis: Spatial Correlation and LISA Cluster Identification</h3>
+
+    <p>
+      Spatial autocorrelation in school transit accessibility was assessed using
+      both <strong>Global Moran’s I</strong> and
+      <strong>Local Indicators of Spatial Association (LISA)</strong>.
+      Global Moran’s I provides an overall measure of spatial dependence by
+      evaluating whether PTAL scores across all schools are spatially clustered,
+      dispersed, or randomly distributed.
+    </p>
+
+    <p>
+      A positive Global Moran’s I indicates that schools with similar transit
+      accessibility tend to be located near one another, while values near zero
+      suggest a spatially random pattern. Statistical significance is assessed
+      using permutation-based tests.
+    </p>
+
+    <p>
+      To identify localized clustering, we applied LISA, which decomposes the
+      global statistic into school-level measures of spatial association. For each
+      school, a local Moran’s I statistic is computed using distance-based spatial
+      weights, comparing the school’s standardized PTAL score to the average PTAL
+      scores of neighboring schools.
+    </p>
+
+    <p>
+      Schools are classified into four cluster types:
+    </p>
+
+    <ul>
+      <li>
+        <strong>High–High:</strong> Schools with above-average PTAL scores surrounded
+        by neighbors with similarly high scores.
+      </li>
+      <li>
+        <strong>Low–Low:</strong> Schools with below-average PTAL scores located near
+        other low-accessibility schools.
+      </li>
+      <li>
+        <strong>High–Low:</strong> Spatial outliers with high PTAL scores surrounded
+        by lower-accessibility neighbors.
+      </li>
+      <li>
+        <strong>Low–High:</strong> Spatial outliers with low PTAL scores surrounded
+        by higher-accessibility neighbors.
+      </li>
+    </ul>
+
+    <p>
+      Statistical significance for each local classification is evaluated using
+      permutation-based tests. Only schools with significant local Moran’s I values
+      are assigned to LISA cluster categories, ensuring that identified clusters
+      reflect meaningful spatial structure rather than random variation.
+    </p>
+  </section>
+</section>
+
     <h2> Data & Cleaning </h2>
     <h3> 511 GTFS Transit Data </h3>
     <p>
@@ -128,55 +278,123 @@
         <br><br>
         We selected only routes with <code>route_type</code> in <code>{0,1,2,3}</code> which includes any tram/streetcar/light rail service, subway/metro, rail, or bus service. 
     </p>
-    <h3> School Data </h3>
-    <p>
-        FEMA's Resilience Analysis and Planning Tool has geospatial data on public and private schools in San Francisco. The data comes from the Homeland Infrastructure Foundation-Level Data (HIFLD) database, and includes geospatial details about each uniquely identified school as well as general information about enrollment and start/end grade.
-        
-        <br><br>
-        <b> Private School Data </b>
-        <br>
-        We downloaded SF Private School data, as seen in RAPT, from the source of an <a href="https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Private_Schools_RAPT/FeatureServer">ArcGIS feature server</a>: We downloaded it as a GEOJSON file.
+    <h4>Associating Routes with Stops</h4>
+<p>
+  As a preprocessing step, we identified the set of transit routes serving each
+  stop. The <code>stop_times</code>, <code>trips</code>, and <code>routes</code>
+  tables were joined to associate each stop with the unique set of route short
+  names that serve it.
+</p>
 
-        Each feature contained: <code>"geometry": { "x": ..., "y": ... }</code>. We converted that to shapely Point objects and created a GeoDataFrame:
-        <pre><code>geometry = Point(geom["x"], geom["y"])
-attrs["geometry"] = point
-records.append(attrs)
+<p>
+  For each stop, these route identifiers were aggregated into a single
+  comma-separated list, producing a stop-level dataset in which each transit stop
+  is annotated with the routes that serve it. This resulting table was then merged
+  with the <code>stops</code> GeoDataFrame, preserving spatial information for
+  subsequent distance-based accessibility analysis.
+</p>
 
-gdf = gpd.GeoDataFrame(records, geometry="geometry", crs="EPSG:4326")</code></pre>
+<h3>School Data</h3>
 
-Then we filtered the data to San Francisco 
+<p>
+  We use geospatial school data from FEMA’s Resilience Analysis and Planning Tool
+  (RAPT), which aggregates public and private school information from the Homeland
+  Infrastructure Foundation-Level Data (HIFLD) database. The dataset includes spatial
+  locations for each uniquely identified school, along with attributes such as
+  enrollment and grade span.
+</p>
 
-<pre><code>sf = gdf[
-   gdf["CITY"].str.contains("San Francisco", case=False, na=False) |
-   gdf["COUNTY"].str.contains("San Francisco", case=False, na=False)
-]</code></pre>
+<p>
+  Our analysis focuses on schools located within San Francisco city and county
+  boundaries.
+</p>
 
-We download the public school data directly from the RAPT interface, loading it from a csv into a geodataframe.
-Then, the private school and public school datasets are nearly identical, with only two additional fields appearing for public schools alone:
-<ul>
-    <li>
-        <code>DISTRICTID</code>
-    </li>
-    <li>
-        <code>GlobalID</code>
-    </li>
-</ul>
+<h4>Private School Data</h4>
+<p>
+  Private school data were obtained from the RAPT ArcGIS Feature Server:
+  <a href="https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Private_Schools_RAPT/FeatureServer">
+    https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Private_Schools_RAPT/FeatureServer
+  </a>.
+  The data were downloaded in GeoJSON format. Each feature included point
+  coordinates stored as separate <code>x</code> and <code>y</code> values. These
+  coordinates were converted into Shapely <code>Point</code> geometries and used
+  to construct a GeoDataFrame with a WGS84 coordinate reference system
+  (<code>EPSG:4326</code>).
+</p>
 
-The table describes the columns we kept for our analysis. Some columns were deemed not relevant and dropped, a list of which can be found in the appendix.
-Many of the entries in columns <code>WEBSITE</code> and <code>SHELTER_ID</code> were not available but these columns were dropped as the values were not relevant to our analysis.
-Classifying School Levels
-The public and private datasets had different classification systems for the "level" of the school, described below:
+<p>
+  After loading the data, we filtered the dataset to include only schools located
+  in San Francisco by selecting records whose <code>CITY</code> or
+  <code>COUNTY</code> fields contained “San Francisco.”
+</p>
 
-For private schools there are <code>"LEVEL_"</code> codes which can be values of 1,2, or 3. There is also <code>"ST_GRADE"</code> and <code>"END_GRADE"</code> which can be used to classify schools.
-<img src="images/image_1.png" alt="School level classification">
-<br>
-The <code>ST_GRADE</code> and <code>END_GRADE</code> fields in the private schools dataset do not directly encode true grade levels. Documentation describing this encoding could not be located, so we inferred the mapping by examining all unique <code>(ST_GRADE, END_GRADE)</code> pairs and verifying individual schools via web searches.
-High schools such as ICA Cristo Rey consistently appeared with <code>ST_GRADE = 14</code> and <code>END_GRADE = 17</code>, indicating that codes 14–17 correspond to Grades 9–12. Schools known to serve Grades K–8 or 6–8 frequently appeared with <code>END_GRADE = 13</code>, suggesting that 13 encodes Grade 8. Based on these patterns, we interpret grade spans of 2–13 and 3–13 as K–8 schools, and 6–13 as middle schools.
-<br><br>
-A small number of schools required manual inspection. For example, St. Ignatius (11–17) is a high school despite having an atypical <code>ST_GRADE</code> code; Mother Goose School (2–4) is a preschool despite its upper-grade code; and San Francisco Christian School (3–17) serves Pre-K through 12. We excluded the Edgewood Center for Children & Families after determining it was not a school.
-Using these interpretations, we assigned each private school to one of: K–8, Elementary, Middle, High, or Other.
-For public schools, the schools are classified in a much more fine-grained way. We use the following dictionary to map the values of <code>"LEVEL_"</code> from the <code>public_school</code> dataset (we only map values of <code>"level_"</code> for which at least one SF school has been labelled as that value) to one of Elementary, Middle, High, None.
-<br><br>
+<h4>Public School Data</h4>
+<p>
+  Public school data were downloaded directly from the RAPT interface as a CSV
+  file and loaded into a GeoDataFrame using the provided latitude and longitude
+  coordinates.
+</p>
+
+<p>
+  The public and private datasets are largely similar in structure. The public
+  school dataset includes two additional fields,
+  <code>DISTRICTID</code> and <code>GlobalID</code>, which were retained during
+  processing.
+</p>
+
+<p>
+  Several columns, such as <code>WEBSITE</code> and <code>SHELTER_ID</code>,
+  contained a high proportion of missing values and were not relevant to our
+  analysis. These columns were dropped. A complete list of retained columns is
+  provided in the appendix.
+</p>
+
+<h4>Classifying School Levels</h4>
+<p>
+  The public and private school datasets use different systems to encode school
+  level, requiring separate classification approaches.
+</p>
+
+<h5>Private Schools</h5>
+<p>
+  Private schools include grade span information via the <code>ST_GRADE</code> and
+  <code>END_GRADE</code> fields. However, these fields do not directly encode
+  standard grade levels, and official documentation describing the encoding could
+  not be located. To interpret these values, we examined all unique
+  <code>(ST_GRADE, END_GRADE)</code> pairs and verified representative schools
+  through external web searches.
+</p>
+
+<p>
+  Several consistent patterns emerged. Known high schools such as ICA Cristo Rey
+  appeared with <code>ST_GRADE = 14</code> and <code>END_GRADE = 17</code>,
+  indicating that codes 14–17 correspond to Grades 9–12. Schools serving Grades
+  K–8 or 6–8 frequently had <code>END_GRADE = 13</code>, suggesting that 13 encodes
+  Grade 8. Based on these observations, we classified schools with grade spans of
+  2–13 or 3–13 as K–8 schools, and those with spans such as 6–13 as middle schools.
+</p>
+
+<p>
+  A small number of schools required manual inspection. For instance, St.
+  Ignatius (11–17) was classified as a high school despite its atypical starting
+  grade code; Mother Goose School (2–4) was identified as a preschool; and San
+  Francisco Christian School (3–17) serves grades Pre-K through 12. We excluded
+  the Edgewood Center for Children &amp; Families after determining that it is not
+  a school.
+</p>
+
+<p>
+  Using these interpretations, each private school was assigned to one of the
+  following categories: Elementary, K–8, Middle, High, Preschool, or Other.
+</p>
+
+<h5>Public Schools</h5>
+<p>
+  Public schools are classified using a more descriptive categorical field,
+  <code>LEVEL_</code>. We mapped these values to broader categories using the
+  following dictionary:
+</p>
+
 <pre><code>pub_level_map = {
     "ELEMENTARY": "Elementary",
     "MIDDLE": "Middle",
@@ -185,18 +403,55 @@ For public schools, the schools are classified in a much more fine-grained way. 
     "NOT REPORTED": None,
 }</code></pre>
 
-We used this dictionary to map the already-classified public schools to our smaller subset of labels. Thus we added a new <code>"level_clean"</code> column for each school dataset. 
-After combining, we can view the value counts:
-<img src="images/image_2.png" alt="School level value counts">
-<br>
-The schools classified as "Other" are SF Christian School (K-12), Five Keys Adult School, and S.F. County Special Education. For our analysis we will mostly look at the Elementary, K-8, Middle, and High groups.
-<br><br>
-<b>Cleaning Enrollment</b>
-<br>
-We then cleaned negative enrollment values. There were no private schools with missing/bad values, however 9 out of 133 public schools had negative or zero enrollment values. This included seven early education/children centers, one adult school, and one high school. Upon looking up the high school, it has permanently closed, so we removed it from our dataset (Leadership High). 
-We concatenate the two datasets into one dataset, <code>schools_sf</code>. First add any columns missing with "none" values (there are only two columns that the public data has that the private data is missing). Then we order the columns the same for each dataframe. Finally we created a new id column for the schools just based on its index.
-Then we can create a geodataframe using the geometry from the latitude and longitude columns. 
+<h4>Distribution of Schools by Level</h4>
+<table>
+  <thead>
+    <tr>
+      <th>School Level</th>
+      <th>Number of Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Elementary</td><td>88</td></tr>
+    <tr><td>K–8</td><td>32</td></tr>
+    <tr><td>Middle</td><td>19</td></tr>
+    <tr><td>High</td><td>33</td></tr>
+    <tr><td>Preschool</td><td>7</td></tr>
+    <tr><td>Other</td><td>3</td></tr>
+  </tbody>
+</table>
+
+<p>
+  The schools classified as <em>Other</em> are San Francisco Christian School
+  (K–12), Five Keys Adult School, and San Francisco County Special Education. For
+  the remainder of our analysis, we focus primarily on Elementary, K–8, Middle,
+  and High schools.
 </p>
+
+<h4>Cleaning Enrollment Data</h4>
+<p>
+  We next cleaned the enrollment field by converting negative enrollment values
+  to missing values. No private schools contained invalid enrollment values.
+  However, 9 out of 133 public schools had negative or zero enrollment values.
+  These included seven early education or children’s centers, one adult school,
+  and one high school.
+</p>
+
+<p>
+  Upon further investigation, the high school with invalid enrollment data,
+  Leadership High, was found to be permanently closed and was removed from the
+  dataset.
+</p>
+
+<h4>Final School Dataset Construction</h4>
+<p>
+  The cleaned public and private datasets were concatenated into a single
+  GeoDataFrame, <code>schools_sf</code>. Any columns missing from one dataset were
+  added with null values, and columns were reordered to ensure schema consistency.
+  Finally, we created a unique <code>school_id</code> for each school based on its
+  index and confirmed that all geometries were stored in WGS84 coordinates.
+</p>
+
 <h3>Parks Data</h3>
 <p>
     We used the City of San Francisco parks/open space dataset (CSV) containing one row per park property, including a WKT geometry field (<code>shape</code>) plus basic metadata such as name, address, acreage, and neighborhood labels.
@@ -220,14 +475,302 @@ To measure transit accessibility around schools, we performed a spatial join of 
 <br><br>
 Our data visualization followed our usual practices—we created a color scale based on the maximum number of Muni stops within any school's isochrone and applied it to the polygons. The darker the shade of the polygon, the more Muni stops existed for that specific school. 
 </p>
-<h2>Results</h2>
 
-<iframe
-  src="viz/LISA_PTAL_Clusters.html"
-  width="100%"
-  height="800"
-  style="border: none;"
-></iframe>
+
+<section id="results">
+  <h2>Results</h2>
+
+  <!-- ===================================================== -->
+  <!-- Parks and Recreation Access -->
+  <!-- ===================================================== -->
+  <section id="parks-access">
+    <h3>Parks and Recreation Access</h3>
+
+    <p>
+      Using 15-minute walking isochrones around each school, we counted the number
+      of parks intersecting each school’s walkable catchment area. This provides a
+      simple and interpretable proxy for the availability of parks and recreation
+      spaces reachable on foot from schools.
+    </p>
+
+    <figure>
+      <iframe src="viz/parks_per_100_students.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Interactive map showing park accessibility for schools, measured as the
+        number of reachable parks within a 15-minute walk.
+      </figcaption>
+    </figure>
+
+    <p>
+      Across the 183 schools in our dataset, the median school can reach 6 parks
+      within a 15-minute walk (interquartile range 4–10), with a mean of 7.0 parks.
+      Park access varies substantially across locations, ranging from 0 to 19
+      reachable parks. While most schools have access to several nearby parks, a
+      small subset of schools have very limited access, highlighting localized gaps
+      in park availability that may warrant further attention.
+    </p>
+
+    <p>
+      Park accessibility varies across individual schools but shows only modest
+      differences by school level. Elementary schools have a median of 7 parks
+      within a 15-minute walk (interquartile range 4–11), while K–8 and high schools
+      have similar medians of 6.5 and 6 parks, respectively. Middle schools exhibit
+      slightly lower access, with a median of 5 parks, though their interquartile
+      range overlaps substantially with other school types.
+    </p>
+
+    <figure>
+      <img src="viz/parks_per_100_boxplot.png"
+           alt="Boxplot of park access by school level">
+      <figcaption>
+        Distribution of the number of reachable parks within a 15-minute walk,
+        grouped by school level.
+      </figcaption>
+    </figure>
+
+    <p>
+      Preschools exhibit higher average park counts; however, this category includes
+      only seven schools and should be interpreted with caution. Overall, the
+      substantial overlap in park-access distributions across school levels suggests
+      that proximity to parks is driven primarily by neighborhood location rather
+      than school type.
+    </p>
+
+    <h4>Summary Statistics</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>School Level</th>
+          <th>Count</th>
+          <th>Median</th>
+          <th>25%</th>
+          <th>75%</th>
+          <th>Mean</th>
+          <th>Min</th>
+          <th>Max</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Elementary</td><td>88</td><td>7</td><td>4</td><td>11</td><td>7.63</td><td>1</td><td>19</td></tr>
+        <tr><td>High</td><td>33</td><td>6</td><td>3</td><td>8</td><td>6.18</td><td>1</td><td>14</td></tr>
+        <tr><td>K–8</td><td>32</td><td>6.5</td><td>4.75</td><td>10</td><td>7.09</td><td>1</td><td>16</td></tr>
+        <tr><td>Middle</td><td>19</td><td>5</td><td>3</td><td>8.5</td><td>5.84</td><td>1</td><td>12</td></tr>
+        <tr><td>Other</td><td>3</td><td>4</td><td>3.5</td><td>4.5</td><td>4.00</td><td>3</td><td>5</td></tr>
+        <tr><td>Preschool</td><td>7</td><td>8</td><td>5</td><td>12.5</td><td>9.14</td><td>4</td><td>17</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Scaling by Enrollment</h4>
+    <p>
+      To account for differences in school size, we also compute park access
+      normalized by enrollment, measured as the number of reachable parks per 100
+      students. To avoid distortion from very small schools, this metric is computed
+      only for schools with enrollment of at least 50 students.
+    </p>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- Transit Accessibility -->
+  <!-- ===================================================== -->
+  <section id="transit-access">
+    <h3>Public Transit Accessibility Score Results</h3>
+
+    <p>
+      Public transit accessibility plays a critical role in determining how easily
+      students, families, and school staff can travel to and from schools without
+      relying on private vehicles. To quantify transit access, we use the Public
+      Transit Accessibility Level (PTAL), a composite measure that captures both the
+      proximity of transit stops and the frequency of service available within a
+      walkable catchment area.
+    </p>
+
+    <p>
+      PTAL scores were computed using weekday service data, with a primary focus on
+      the morning peak period (7–10 AM). Additional time windows, including midday
+      off-peak (10 AM–2 PM) and evening peak (4–7 PM), were analyzed to assess the
+      temporal robustness of accessibility patterns.
+    </p>
+
+    <h4>PTAL Score Distribution</h4>
+    <figure>
+      <iframe src="viz/ptal_by_level_map.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Interactive map showing PTAL scores by school level during the morning peak
+        period.
+      </figcaption>
+    </figure>
+
+    <p>
+      PTAL scores are broadly similar across school levels, with overlapping
+      interquartile ranges and mean values between approximately 4.8 and 5.7. No
+      school level consistently exhibits substantially higher or lower transit
+      accessibility, suggesting that PTAL primarily reflects neighborhood-level
+      transit infrastructure rather than institutional characteristics.
+    </p>
+
+    <!-- ===================================================== -->
+    <!-- Spatial Structure -->
+    <!-- ===================================================== -->
+    <h4>Spatial Structure of Transit Accessibility</h4>
+
+    <p>
+      Using distance-based spatial weights (1.5 km threshold), we find significant
+      positive spatial autocorrelation in PTAL scores (Moran’s I = 0.47, p = 0.001),
+      indicating that transit accessibility is spatially clustered rather than
+      randomly distributed across schools.
+    </p>
+
+    <figure>
+      <iframe src="viz/LISA_PTAL_Clusters.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Local Indicators of Spatial Association (LISA) clusters for PTAL scores.
+      </figcaption>
+    </figure>
+
+    <p>
+      Low–Low clusters are concentrated in southern and western neighborhoods,
+      while High–High clusters are located in central and downtown San Francisco.
+      These clusters reflect the spatial organization of transit infrastructure at
+      the neighborhood scale.
+    </p>
+
+    <!-- ===================================================== -->
+    <!-- Temporal Robustness -->
+    <!-- ===================================================== -->
+    <h4>Temporal Robustness of PTAL</h4>
+
+    <figure>
+      <iframe src="viz/ptal_time_slider.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Animated map showing PTAL scores across multiple weekday time periods.
+      </figcaption>
+    </figure>
+
+    <p>
+      While absolute PTAL values change modestly across time windows, the overall
+      spatial structure remains highly stable. This consistency supports the use of
+      morning peak PTAL values for all primary analyses.
+    </p>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- Park vs Transit -->
+  <!-- ===================================================== -->
+  <section id="parks-vs-transit">
+    <h3>Relationship Between Park and Transit Accessibility</h3>
+
+    <figure>
+      <iframe src="viz/scatter_parks_ptal.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Relationship between PTAL scores and park accessibility, colored by school
+        level.
+      </figcaption>
+    </figure>
+
+    <p>
+      We observe a moderate positive association between transit accessibility and
+      park accessibility (Spearman’s ρ = 0.38). Schools with higher levels of transit
+      access tend, on average, to have greater access to parks, though substantial
+      variability remains.
+    </p>
+
+    <p>
+      Differences across school levels are visible, with elementary and K–8 schools
+      more frequently appearing among observations with higher park accessibility.
+      Overall, transit and park accessibility represent related but distinct
+      dimensions of the urban environment.
+    </p>
+  </section>
+</section>
+
+<section id="limitations">
+  <h2>Limitations and Dark Data</h2>
+
+  <p>
+    Several limitations and sources of <em>dark data</em> should be considered when
+    interpreting the results of our transit and park accessibility analyses. Dark
+    data refers to relevant information that is unavailable, unobserved, or
+    difficult to measure, but which nonetheless shapes real-world experiences and
+    outcomes.
+  </p>
+
+  <p>
+    First, while the Public Transit Accessibility Level (PTAL) provides a useful
+    relative measure of transit availability across schools, its absolute values
+    are not directly interpretable in isolation. PTAL is best understood as a
+    comparative metric rather than a literal measure of travel time or service
+    quality.
+  </p>
+
+  <p>
+    Our PTAL metric is derived from static GTFS schedule data, which represent
+    planned service rather than observed transit operations. This introduces an
+    important form of dark data: real-time transit conditions. Delays,
+    cancellations, crowding, and reliability—factors that strongly affect how
+    accessible transit feels in practice—are not captured by scheduled data. As a
+    result, schools located along routes with frequent scheduled service may still
+    experience lower effective accessibility during periods of disruption.
+  </p>
+
+  <p>
+    In addition, the walking-access component of PTAL assumes uniform pedestrian
+    conditions and does not account for dark data related to sidewalk quality,
+    traffic safety, topography, or perceived comfort. These factors influence
+    whether transit is realistically usable by students but are not represented in
+    the available datasets.
+  </p>
+
+  <p>
+    More broadly, our operationalization of transit accessibility reduces access to
+    the number and frequency of scheduled vehicles serving nearby stops. While this
+    is a reasonable proxy, it does not capture directional relevance or trip
+    purpose, which represent additional forms of dark data. For example, routes
+    serving a school may not connect to students’ home neighborhoods, after-school
+    destinations, or workplaces, meaning that high PTAL scores may not translate
+    into meaningful mobility for all students.
+  </p>
+
+  <p>
+    Park accessibility measures are also affected by dark data. We measure park
+    access based on spatial proximity alone, counting parks that intersect a
+    school’s walkable catchment area. This approach does not capture qualitative
+    differences among parks, such as size, programming, safety, maintenance, or
+    hours of access. A park may be geographically nearby but effectively
+    inaccessible to students due to fencing, limited amenities, or perceived
+    safety concerns.
+  </p>
+
+  <p>
+    Additionally, enrollment data were incomplete or unreliable for a small number
+    of schools, particularly early education centers and adult education
+    facilities. Although we removed closed schools and applied minimum enrollment
+    thresholds when computing enrollment-normalized park metrics, residual
+    inaccuracies in enrollment figures represent another source of dark data that
+    may affect scaled accessibility measures.
+  </p>
+
+  <p>
+    Finally, all analyses are conducted at the school level, which introduces
+    limitations related to the modifiable areal unit problem (MAUP) and ecological
+    fallacy. School-level accessibility metrics obscure individual-level variation
+    and behavior—another form of dark data. We do not observe which transit routes
+    students actually use, how frequently they visit nearby parks, or how access
+    differs across student populations within the same school. These unobserved
+    behavioral and demographic factors limit the ability to draw individual-level
+    or causal conclusions about accessibility and equity outcomes.
+  </p>
+</section>
+
 
 </body>
 </html>
