@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF</title>
+    <title>Evaluating Transit and Park Accessibility for Schools in San Francisco: A Spatial Analysis</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <h1>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF!</h1>
+    <h1>Evaluating Transit and Park Accessibility for Schools in San Francisco: A Spatial Analysis</h1>
     <p>Aiji Li, Anika Sikka, Danielle Murphy, Kathryn Sun (Group 26)</p>
     <h2> Intro: Problem And Motivation </h2>
     <p>
@@ -595,11 +595,11 @@ Our data visualization followed our usual practices—we created a color scale b
 
     <h4>PTAL Score Distribution</h4>
     <figure>
-      <iframe src="viz/ptal_by_level_map.html"
+      <iframe src="viz/ptal_map.html"
               width="100%" height="500"
               style="border:none;"></iframe>
       <figcaption>
-        Interactive map showing PTAL scores by school level during the morning peak
+        PTAL scores by school level during the morning peak
         period.
       </figcaption>
     </figure>
@@ -634,7 +634,7 @@ Our data visualization followed our usual practices—we created a color scale b
     </figure>
 
     <p>
-      Low–Low clusters are concentrated in southern and western neighborhoods,
+      Low–Low clusters are found in the Sunset District and in South San Francisco,
       while High–High clusters are located in central and downtown San Francisco.
       These clusters reflect the spatial organization of transit infrastructure at
       the neighborhood scale.
@@ -770,6 +770,76 @@ Our data visualization followed our usual practices—we created a color scale b
     or causal conclusions about accessibility and equity outcomes.
   </p>
 </section>
+
+<h2 id="citations">References</h2>
+
+<ol>
+  <li id="chung2014">
+    Chung, E., Chung, Y., & Lee, J. (2014).
+    <em>A review of transit accessibility measures</em>.
+    <em>Journal of Transport Geography, 40</em>, 1–10.
+    <a href="https://ira.lib.polyu.edu.hk/bitstream/10397/92556/1/EE-0265_Chung_Review_Transit_Accessibility.pdf"
+       target="_blank" rel="noopener">
+       Link
+    </a>
+  </li>
+
+  <li id="anselin1995">
+    Anselin, L. (1995).
+    <em>Local indicators of spatial association—LISA</em>.
+    <em>Geographical Analysis, 27</em>(2), 93–115.
+    <a href="https://doi.org/10.1111/j.1538-4632.1995.tb00338.x"
+       target="_blank" rel="noopener">
+       DOI
+    </a>
+  </li>
+
+  <li id="oakridgeprivschools">
+    Oak Ridge National Laboratory. (2025).
+    <em>Private Schools RAPT</em> [ArcGIS Feature Service].
+    <a href="https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Private_Schools_RAPT/FeatureServer"
+       target="_blank" rel="noopener">
+       ArcGIS Service
+    </a>
+  </li>
+
+  <li id="oakridgepubschools">
+    Oak Ridge National Laboratory. (2025).
+    <em>Public Schools</em> [ArcGIS Feature Layer].
+    <a href="https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Public_Schools/FeatureServer"
+       target="_blank" rel="noopener">
+       ArcGIS Service
+    </a>
+  </li>
+
+  <li id="fema2024">
+    Federal Emergency Management Agency. (2024).
+    <em>Resilience Analysis and Planning Tool (RAPT)</em>.
+    <a href="https://www.fema.gov/emergency-managers/risk-management/rapt"
+       target="_blank" rel="noopener">
+       Website
+    </a>
+  </li>
+
+  <li id="mtc511gtfs">
+    Metropolitan Transportation Commission. (2025).
+    <em>511 Bay Area GTFS Transit Data</em>.
+    <a href="https://511.org/open-data/transit"
+       target="_blank" rel="noopener">
+       Open Data Portal
+    </a>
+  </li>
+
+  <li id="boeing2017">
+    Boeing, G. (2017).
+    <em>OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks</em>.
+    <em>Computers, Environment and Urban Systems, 65</em>, 126–139.
+    <a href="https://doi.org/10.1016/j.compenvurbsys.2017.05.004"
+       target="_blank" rel="noopener">
+       DOI
+    </a>
+  </li>
+</ol>
 
 
 </body>
