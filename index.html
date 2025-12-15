@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluating Transit and Park Accessibility for Schools in San Francisco: A Spatial Analysis</title>
+    <title>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <h1>Evaluating Transit and Park Accessibility for Schools in San Francisco: A Spatial Analysis</h1>
+    <h1>Measuring Opportunity: Cultural and Residential Space Ratios and Their Relationship to Income Across SF!</h1>
     <p>Aiji Li, Anika Sikka, Danielle Murphy, Kathryn Sun (Group 26)</p>
     <h2> Intro: Problem And Motivation </h2>
     <p>
@@ -493,15 +493,6 @@ Our data visualization followed our usual practices—we created a color scale b
       spaces reachable on foot from schools.
     </p>
 
-    <figure>
-      <iframe src="viz/parks_per_100_students.html"
-              width="100%" height="500"
-              style="border:none;"></iframe>
-      <figcaption>
-        Interactive map showing park accessibility for schools, measured as the
-        number of reachable parks within a 15-minute walk.
-      </figcaption>
-    </figure>
 
     <p>
       Across the 183 schools in our dataset, the median school can reach 6 parks
@@ -536,6 +527,13 @@ Our data visualization followed our usual practices—we created a color scale b
       substantial overlap in park-access distributions across school levels suggests
       that proximity to parks is driven primarily by neighborhood location rather
       than school type.
+      Elementary and K–8 schools display slightly higher median park access compared to middle and high schools, as well as wider interquartile ranges. However, these differences should be interpreted with caution, as elementary and K–8 schools are substantially more numerous in the dataset than middle and high schools. The larger sample sizes for these school levels naturally produce more stable estimates and greater observed variability, while the smaller number of middle and high schools results in more compact distributions that may underrepresent the full range of park accessibility experienced by those school types.
+
+In addition to sample size effects, these patterns likely reflect differences in spatial distribution. Elementary and K–8 schools are more broadly dispersed across residential neighborhoods, where park availability varies considerably from block to block. Middle and high schools, by contrast, are fewer in number and tend to be more spatially clustered, often located along denser corridors where park availability may be constrained. As a result, the narrower distributions observed for middle and high schools may reflect both their limited sample size and their concentration in specific urban contexts rather than inherently more uniform access.
+
+Notably, the substantial overlap in park-access distributions across all school levels indicates that neighborhood location plays a more important role in shaping park accessibility than school level alone. Schools of different types located in the same neighborhoods tend to experience similar access to nearby parks, reinforcing the interpretation that park accessibility is primarily a spatial rather than institutional phenomenon.
+
+
     </p>
 
     <h4>Summary Statistics</h4>
@@ -569,6 +567,17 @@ Our data visualization followed our usual practices—we created a color scale b
       students. To avoid distortion from very small schools, this metric is computed
       only for schools with enrollment of at least 50 students.
     </p>
+
+        <figure>
+      <iframe src="viz/parks_per_100_students.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        Interactive map showing park accessibility for schools, measured as the
+        number of reachable parks within a 15-minute walk.
+      </figcaption>
+    </figure>
+
   </section>
 
   <!-- ===================================================== -->
