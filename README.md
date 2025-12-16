@@ -25,7 +25,7 @@ cyplan101-project/
 
 ├── notebooks/ # exploratory + analysis notebooks
 
-├── scripts/ # reusable scripts for cleaning, processing, modeling
+├── scripts/ # reusable scripts for data cleaning, processing
 
 ├── index.html/ # html for Github Pages project writeup
 
