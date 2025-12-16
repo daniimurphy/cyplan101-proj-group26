@@ -845,6 +845,247 @@ Notably, a substantial share of schools are classified as not locally significan
   </p>
 </section>
 
+<h2>Appendix</h2>
+<h4>SF Schools Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>address</td><td>Street address of the school</td><td>string</td></tr>
+    <tr><td>city</td><td>City name</td><td>string</td></tr>
+    <tr><td>country</td><td>Country (e.g., USA)</td><td>string</td></tr>
+    <tr><td>county</td><td>County name</td><td>string</td></tr>
+    <tr><td>countyfips</td><td>County FIPS code</td><td>string</td></tr>
+    <tr><td>districtid</td><td>District identifier</td><td>string</td></tr>
+    <tr><td>end_grade</td><td>Ending grade code</td><td>string</td></tr>
+    <tr><td>enrollment</td><td>Student enrollment count</td><td>float</td></tr>
+    <tr><td>fid</td><td>Feature ID from source</td><td>int</td></tr>
+    <tr><td>ft_teacher</td><td>Number of full-time teachers</td><td>int</td></tr>
+    <tr><td>geometry</td><td>School point geometry</td><td>geometry</td></tr>
+    <tr><td>globalid</td><td>Global unique identifier</td><td>string</td></tr>
+    <tr><td>latitude</td><td>Latitude coordinate</td><td>float</td></tr>
+    <tr><td>level_</td><td>Source school level label</td><td>string</td></tr>
+    <tr><td>level_clean</td><td>Cleaned school level label</td><td>string</td></tr>
+    <tr><td>longitude</td><td>Longitude coordinate</td><td>float</td></tr>
+    <tr><td>naics_code</td><td>NAICS classification code</td><td>string</td></tr>
+    <tr><td>naics_desc</td><td>NAICS description</td><td>string</td></tr>
+    <tr><td>name</td><td>School name</td><td>string</td></tr>
+    <tr><td>ncesid</td><td>NCES school identifier</td><td>string</td></tr>
+    <tr><td>population</td><td>Population field from source</td><td>int</td></tr>
+    <tr><td>source</td><td>Source/provider label</td><td>string</td></tr>
+    <tr><td>source_dat</td><td>Source date/vintage</td><td>string</td></tr>
+    <tr><td>st_grade</td><td>Starting grade code</td><td>string</td></tr>
+    <tr><td>state</td><td>State abbreviation</td><td>string</td></tr>
+    <tr><td>status</td><td>Operational status</td><td>string</td></tr>
+    <tr><td>telephone</td><td>Phone number</td><td>string</td></tr>
+    <tr><td>type</td><td>School type code</td><td>string</td></tr>
+    <tr><td>val_date</td><td>Validation date</td><td>string</td></tr>
+    <tr><td>val_method</td><td>Validation method</td><td>string</td></tr>
+    <tr><td>zip</td><td>ZIP code</td><td>string</td></tr>
+    <tr><td>zip4</td><td>ZIP+4 extension</td><td>string</td></tr>
+    <tr><td>school_id</td><td>Generated unique school ID</td><td>int</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>Parks Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>objectid</td><td>Source object ID</td><td>int</td></tr>
+    <tr><td>property_id</td><td>Park property identifier</td><td>int</td></tr>
+    <tr><td>property_name</td><td>Name of the park</td><td>string</td></tr>
+    <tr><td>longitude</td><td>Longitude coordinate</td><td>float</td></tr>
+    <tr><td>latitude</td><td>Latitude coordinate</td><td>float</td></tr>
+    <tr><td>acres</td><td>Area in acres</td><td>float</td></tr>
+    <tr><td>squarefeet</td><td>Area in square feet</td><td>string</td></tr>
+    <tr><td>perimeterlength</td><td>Perimeter length</td><td>string</td></tr>
+    <tr><td>propertytype</td><td>Property type</td><td>string</td></tr>
+    <tr><td>address</td><td>Street address</td><td>string</td></tr>
+    <tr><td>city</td><td>City name</td><td>string</td></tr>
+    <tr><td>state</td><td>State abbreviation</td><td>string</td></tr>
+    <tr><td>zipcode</td><td>ZIP code</td><td>int</td></tr>
+    <tr><td>complex</td><td>Complex grouping</td><td>string</td></tr>
+    <tr><td>psa</td><td>Police Service Area</td><td>string</td></tr>
+    <tr><td>ownership</td><td>Ownership category</td><td>string</td></tr>
+    <tr><td>supdist</td><td>Supervisor district</td><td>string</td></tr>
+    <tr><td>analysis_neighborhood</td><td>Analysis neighborhood</td><td>string</td></tr>
+    <tr><td>shape</td><td>Geometry (text)</td><td>string</td></tr>
+    <tr><td>created_date</td><td>Created timestamp</td><td>string</td></tr>
+    <tr><td>last_edited_date</td><td>Last edited timestamp</td><td>string</td></tr>
+    <tr><td>data_as_of</td><td>Data currency timestamp</td><td>string</td></tr>
+    <tr><td>data_loaded_at</td><td>Data load timestamp</td><td>string</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>GTFS Stops Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>stop_id</td><td>Unique stop ID</td><td>string</td></tr>
+    <tr><td>stop_code</td><td>Public stop code</td><td>string</td></tr>
+    <tr><td>stop_name</td><td>Stop name</td><td>string</td></tr>
+    <tr><td>tts_stop_name</td><td>Text-to-speech name</td><td>string</td></tr>
+    <tr><td>stop_desc</td><td>Stop description</td><td>string</td></tr>
+    <tr><td>stop_lat</td><td>Latitude</td><td>float</td></tr>
+    <tr><td>stop_lon</td><td>Longitude</td><td>float</td></tr>
+    <tr><td>zone_id</td><td>Fare zone</td><td>string</td></tr>
+    <tr><td>stop_url</td><td>Stop webpage</td><td>string</td></tr>
+    <tr><td>location_type</td><td>Location type</td><td>integer</td></tr>
+    <tr><td>parent_station</td><td>Parent station</td><td>string</td></tr>
+    <tr><td>stop_timezone</td><td>Timezone</td><td>string</td></tr>
+    <tr><td>wheelchair_boarding</td><td>Wheelchair access</td><td>integer</td></tr>
+    <tr><td>level_id</td><td>Station level ID</td><td>string</td></tr>
+    <tr><td>platform_code</td><td>Platform code</td><td>string</td></tr>
+    <tr><td>stop_access</td><td>Access type</td><td>integer</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>GTFS Routes Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>route_id</td><td>Route ID</td><td>string</td></tr>
+    <tr><td>agency_id</td><td>Agency ID</td><td>string</td></tr>
+    <tr><td>route_short_name</td><td>Short route name</td><td>string</td></tr>
+    <tr><td>route_long_name</td><td>Long route name</td><td>string</td></tr>
+    <tr><td>route_desc</td><td>Route description</td><td>string</td></tr>
+    <tr><td>route_type</td><td>Transit mode</td><td>integer</td></tr>
+    <tr><td>route_url</td><td>Route webpage</td><td>string</td></tr>
+    <tr><td>route_color</td><td>Route color</td><td>string</td></tr>
+    <tr><td>route_text_color</td><td>Text color</td><td>string</td></tr>
+    <tr><td>route_sort_order</td><td>Sort order</td><td>integer</td></tr>
+    <tr><td>continuous_pickup</td><td>Pickup policy</td><td>integer</td></tr>
+    <tr><td>continuous_drop_off</td><td>Drop-off policy</td><td>integer</td></tr>
+    <tr><td>network_id</td><td>Network ID</td><td>string</td></tr>
+    <tr><td>cemv_support</td><td>Contactless payment</td><td>integer</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>GTFS Trips Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>route_id</td><td>Route ID</td><td>string</td></tr>
+    <tr><td>service_id</td><td>Service ID</td><td>string</td></tr>
+    <tr><td>trip_id</td><td>Trip ID</td><td>string</td></tr>
+    <tr><td>trip_headsign</td><td>Trip destination</td><td>string</td></tr>
+    <tr><td>trip_short_name</td><td>Short trip name</td><td>string</td></tr>
+    <tr><td>direction_id</td><td>Direction</td><td>integer</td></tr>
+    <tr><td>block_id</td><td>Block ID</td><td>string</td></tr>
+    <tr><td>shape_id</td><td>Shape ID</td><td>string</td></tr>
+    <tr><td>wheelchair_accessible</td><td>Wheelchair access</td><td>integer</td></tr>
+    <tr><td>bikes_allowed</td><td>Bikes allowed</td><td>integer</td></tr>
+    <tr><td>cars_allowed</td><td>Cars allowed</td><td>integer</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>GTFS Stop Times Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>trip_id</td><td>Trip ID</td><td>string</td></tr>
+    <tr><td>arrival_time</td><td>Arrival time</td><td>string</td></tr>
+    <tr><td>departure_time</td><td>Departure time</td><td>string</td></tr>
+    <tr><td>stop_id</td><td>Stop ID</td><td>string</td></tr>
+    <tr><td>stop_sequence</td><td>Stop order</td><td>integer</td></tr>
+    <tr><td>pickup_type</td><td>Pickup policy</td><td>integer</td></tr>
+    <tr><td>drop_off_type</td><td>Drop-off policy</td><td>integer</td></tr>
+    <tr><td>shape_dist_traveled</td><td>Distance traveled</td><td>float</td></tr>
+    <tr><td>timepoint</td><td>Exact vs estimated</td><td>integer</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>GTFS Calendar Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>service_id</td><td>Service ID</td><td>string</td></tr>
+    <tr><td>monday</td><td>Runs Monday</td><td>integer</td></tr>
+    <tr><td>tuesday</td><td>Runs Tuesday</td><td>integer</td></tr>
+    <tr><td>wednesday</td><td>Runs Wednesday</td><td>integer</td></tr>
+    <tr><td>thursday</td><td>Runs Thursday</td><td>integer</td></tr>
+    <tr><td>friday</td><td>Runs Friday</td><td>integer</td></tr>
+    <tr><td>saturday</td><td>Runs Saturday</td><td>integer</td></tr>
+    <tr><td>sunday</td><td>Runs Sunday</td><td>integer</td></tr>
+    <tr><td>start_date</td><td>Start date</td><td>string</td></tr>
+    <tr><td>end_date</td><td>End date</td><td>string</td></tr>
+  </tbody>
+</table>
+<br>
+<h4>Muni Stops Dataset</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Column Name</th>
+      <th>Description</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>OBJECTID</td><td>Source object ID</td><td>int</td></tr>
+    <tr><td>STOPNAME</td><td>Stop name</td><td>string</td></tr>
+    <tr><td>TRAPEZESTOPABBR</td><td>Trapeze stop abbreviation</td><td>string</td></tr>
+    <tr><td>RUCUSSTOPABBR</td><td>RUCUS stop abbreviation</td><td>string</td></tr>
+    <tr><td>STOPID</td><td>Muni stop ID</td><td>int</td></tr>
+    <tr><td>LATITUDE</td><td>Latitude</td><td>float</td></tr>
+    <tr><td>LONGITUDE</td><td>Longitude</td><td>float</td></tr>
+    <tr><td>ACCESSIBILITYMASK</td><td>Accessibility flag</td><td>float</td></tr>
+    <tr><td>ATSTREET</td><td>Cross street</td><td>string</td></tr>
+    <tr><td>ONSTREET</td><td>Street name</td><td>string</td></tr>
+    <tr><td>POSITION</td><td>Curb position</td><td>string</td></tr>
+    <tr><td>ORIENTATION</td><td>Orientation</td><td>string</td></tr>
+    <tr><td>SERVICEPLANNINGSTOPTYPE</td><td>Stop type</td><td>string</td></tr>
+    <tr><td>SHELTER</td><td>Shelter indicator</td><td>int</td></tr>
+    <tr><td>SUPERVISOR_DISTRICT</td><td>Supervisor district</td><td>float</td></tr>
+    <tr><td>shape</td><td>Geometry text</td><td>string</td></tr>
+    <tr><td>data_as_of</td><td>Data currency timestamp</td><td>string</td></tr>
+    <tr><td>data_loaded_at</td><td>Load timestamp</td><td>string</td></tr>
+  </tbody>
+</table>
+
+
+
 <h2 id="citations">References</h2>
 
 <ol>
@@ -914,6 +1155,8 @@ Notably, a substantial share of schools are classified as not locally significan
     </a>
   </li>
 </ol>
+
+
 
 
 </body>
