@@ -93,9 +93,14 @@ Notebooks in the `notebooks/` directory support both exploratory analysis and th
   - Constructing PTAL-style public transit accessibility scores  
   - Performing spatial autocorrelation analysis (Moran’s I and LISA)  
   - Producing figures and interactive visualizations used in the final report
-
+    
+- **`schools_plot_basic_isochrones.ipynb`**
+  Demonstrates plotting of basic walking isochrones around schools.
+  
 - **`load_clean_school_data.ipynb`**  
   Demonstrates how the cleaned and harmonized school dataset is loaded for downstream analysis.
+
+
 
 ---
 
@@ -127,7 +132,6 @@ data/raw/
 data/processed/
 
 yaml
-Copy code
 
 ---
 
