@@ -469,11 +469,29 @@ Minimal cleaning was needed beyond geometry parsing. We kept the dataset at full
 </p>
 <h3>Muni Data</h3>
 <p>
-    Upon obtaining SFMTA Muni stop data as a GeoJSON file, we dissected the dataset and then performed analysis in conjunction with our preexisting school dataset. Each feature in the dataset contained geographical information about the stops—we had to reproject the geometry to ensure spatial consistency with the school isochrone data. 
-    <br><br>
-To measure transit accessibility around schools, we performed a spatial join of the Muni stops dataset with the 15-minute walking isochrones computer above. We then grouped the joined dataset by school index to aggregate all stop counts for each school. 
-<br><br>
-Our data visualization followed our usual practices—we created a color scale based on the maximum number of Muni stops within any school's isochrone and applied it to the polygons. The darker the shade of the polygon, the more Muni stops existed for that specific school. 
+  Upon obtaining SFMTA Muni stop data as a GeoJSON file, we dissected the dataset and then performed analysis in conjunction with our preexisting school dataset. Each feature in the dataset contained geographical information about the stops. We reprojected the geometry to ensure spatial consistency with the school isochrone data. 
+  <br><br>
+  To measure transit accessibility around schools, we performed a spatial join of the Muni stops dataset with the 15-minute walking isochrones computer above. We then grouped the joined dataset by school index to aggregate all stop counts for each school. 
+  <br><br> 
+  Our data visualization followed our usual practices - we created a color scale based on the maximum number of Muni stops within any school’s isochrone and applied it to the polygons. The darker the shade of the polygon, the more Muni stops existed for that specific school.
+  <br><br>
+  From this initial visualization, we were also curious about the existence of “transit deserts,” areas where students may face reduced access to public transportation. To locate transit deserts around schools, we examined the empirical distribution of stop counts and summary statistics, including the median the interquartile range. We then classified schools into three transit accessibility categories based on the quartiles:
+  <ol>
+    <li>
+      Transit Desert: schools in the bottom 25% of Muni stop counts
+    </li>
+    <li>
+      Moderate Access: schools between the 25th and 75th percentiles of Muni stop counts
+    </li>
+    <li>
+      High Access: schools in the top 25% of Muni stop counts 
+    </li>
+  </ol>
+  The use of quantiles allows us to identify relative transit disadvantages without imposing a cutoff. It ensures that the definition of a transit desert is based on the observed distribution of access across schools.
+  <br><br>
+  To visualize the transit accessibility categories, we created an interactive map similar to our other maps in which each school’s 15-minute isochrone is colored accordingly (red for Transit Desert, yellow for Moderate Access, and green for High Access).
+  <br><br>
+  Our Muni data results provide a clear baseline to complement our PTAL analysis presented later in the paper.
 </p>
 
 
@@ -584,6 +602,46 @@ Notably, the substantial overlap in park-access distributions across all school 
   <!-- ===================================================== -->
   <section id="transit-access">
     <h3>Public Transit Accessibility Score Results</h3>
+
+    <p>
+      Understanding access to public transportation is critical in evaluating how easily students, families, and school staff can travel to and from schools without relying on private vehicles. Public transit accessibility influences daily commuting, after-school activities, and equitable access to educational opportunities, particularly in dense urban environments like San Francisco where transit availability varies substantially by neighborhood.
+    </p>
+    <p>
+      Before presenting the advanced frequency-weighted PTAL results, we introduce a simpler baseline measure of transit accessibility: the number of Muni stops reachable within a 15-minute walking isochrone around each school. The following 2 maps show the 15-Minute Walk Accessibility to Muni Stops for middle and high schools respectively</p>
+      <h4>Walk Accessibility to Muni Stops</h4>
+    <figure>
+      <iframe src="viz/sf_schools_muni_map_filtered_middle.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        15-Minute Walk Accessibility to Muni Stops for Middle Schools
+      </figcaption>
+    </figure>
+    <br>
+    <figure>
+      <iframe src="viz/sf_schools_muni_map_filtered_high.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        15-Minute Walk Accessibility to Muni Stops for High Schools. 
+      </figcaption>
+    </figure>
+      <br>
+     <p> This metric extends and allows us to visually identify transit deserts. We focused on middle and high schools only, as these students are more likely to independently rely on public transportation to get around. Schools were categorized into transit deserts (bottom 25%), moderate access (middle 50%), and high access (top 25%), and visualized using colored isochrones.
+    </p>
+    <h4>Transit Deserts: Middle and High Schools</h4>
+    <figure>
+      <iframe src="viz/transit_deserts_map.html"
+              width="100%" height="500"
+              style="border:none;"></iframe>
+      <figcaption>
+        This reveals transit deserts (categorized by access level) for middle and high schools in the SF area. 
+      </figcaption>
+    </figure>
+    <br>
+    <p>
+      The resulting map reveals several transit-poor areas, most of which are away from downtown. Schools with more nearby Muni stops are more evenly distributed around the city rather than being concentrated exclusively in central SF. Compared to the PTAL results, this shows less emphasis on downtown accessibility and instead highlights neighborhood-level differences in transit availability. While this metric does not capture frequency, reliability, or access to non-Muni transportation, it is an interesting and useful first step for identifying inequalities in transit access.
+    </p>
 
     <p>
       Public transit accessibility plays a critical role in determining how easily
